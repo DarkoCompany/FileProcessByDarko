@@ -20,6 +20,7 @@ namespace FileProcessService
         protected override void OnStart(string[] args)
         {
             //This is a test
+            //Get TeamCity to build PR
         }
 
         protected override void OnStop()
