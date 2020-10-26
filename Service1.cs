@@ -19,6 +19,7 @@ namespace FileProcessService
 
         protected override void OnStart(string[] args)
         {
+            //This is a test
         }
 
         protected override void OnStop()
