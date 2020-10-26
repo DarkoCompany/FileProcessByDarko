@@ -20,6 +20,7 @@ namespace FileProcessService
         protected override void OnStart(string[] args)
         {
             //This is a test
+            //This is a second test
         }
 
         protected override void OnStop()
