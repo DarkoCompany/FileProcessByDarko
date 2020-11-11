@@ -1,6 +1,6 @@
 ﻿namespace FileProcessService
 {
-    partial class Service1
+    partial class StandardService
     {
         /// <summary> 
         /// Required designer variable.
