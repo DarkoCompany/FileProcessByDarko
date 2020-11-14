@@ -31,8 +31,8 @@ namespace FileProcessService
             }
             else
             {
-                m_FromDir = ConfigurationManager.AppSettings["FromDir"].ToString();
-                m_ToDir = ConfigurationManager.AppSettings["ToDir"].ToString();
+                m_FromDir = ConfigurationManager.AppSettings["election.incoming"].ToString();
+                m_ToDir = ConfigurationManager.AppSettings["election.outgoing"].ToString();
             }
         }
     }
