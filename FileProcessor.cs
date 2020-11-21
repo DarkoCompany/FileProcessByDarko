@@ -61,7 +61,7 @@ namespace FileProcessService
             while (!m_shutdownRequested)
             {
                 DateTime nowDT = DateTime.Now;
-                if (nowDT.Subtract(m_LastCheckedTime).TotalSeconds > 20)
+                if (nowDT.Subtract(m_LastCheckedTime).TotalSeconds > 10)
                 {
                     CheckData();
                     m_LastCheckedTime = nowDT;
@@ -82,22 +82,23 @@ namespace FileProcessService
                         switch (msg.GetMessageType())
                         {
                             case MsgType.CandidateDetails:
-                                //m_ElectionManager.HandleCandidateDetails(msg);
+                                m_ElectionManager.HandleCandidateDetails(msg);
                                 break;
                             case MsgType.VotesDetails:
-                                //m_ElectionManager.HandleVotes(msg);
+                                m_ElectionManager.HandleVotes(msg);
                                 break;
                             case MsgType.ElectionResultsRequest:
-                                //foreach (MsgBase subMsg in m_ElectionManager.HandleResoultRequest(msg))
-                                //{
-                                //    m_MessageClient.SendMessages(subMsg);
-                                //}
+                                foreach (MsgBase subMsg in m_ElectionManager.HandleResoultRequest(msg))
+                                {
+                                    m_MessageClient.SendMessages(subMsg);
+                                }
                                 break;
                         }
                     }
                     catch (Exception ex)
                     {
-
+                        string err = ex.Message;
+                        //report this
                     }
                 }
             }
