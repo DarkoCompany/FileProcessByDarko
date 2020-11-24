@@ -38,6 +38,7 @@ namespace FileProcessService
         {
             List<MsgBase> results = new List<MsgBase>();
             ElectionResultsRequest resultsRequest = msg as ElectionResultsRequest;
+            //Final Results
             if (resultsRequest.State == "All")
             {
                 foreach (var state in m_Votes)
