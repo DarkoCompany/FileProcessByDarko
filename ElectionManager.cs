@@ -38,8 +38,54 @@ namespace FileProcessService
         {
             List<MsgBase> results = new List<MsgBase>();
             ElectionResultsRequest resultsRequest = msg as ElectionResultsRequest;
-            //Final Results here
-            if (resultsRequest.State == "All")
+            if (resultsRequest.State == "")
+            {
+                ElectionResults result = new ElectionResults()
+                {
+                    RequestUID = resultsRequest.Base_MsgUID,
+                    Election = resultsRequest.ElectionID,
+                    State = ""
+                };
+
+                Dictionary<string, VotingResult> summaryResults = new Dictionary<string, VotingResult>();
+                foreach (var state in m_Votes)
+                {
+                    foreach (VotesDetails votes in state.Value.Values)
+                    {
+                        if (summaryResults.ContainsKey(votes.CandidateId))
+                        {
+                            summaryResults[votes.CandidateId].VoteCount += votes.VoteCount;
+                            summaryResults[votes.CandidateId].ElectoralVotesWon += votes.ElectoralVotesWon;
+                        }
+                        else
+                        {
+                            CandidateDetails candidate = m_Candidates[votes.CandidateId];
+                            VotingResult vResult = new VotingResult()
+                            {
+                                CandidateId = votes.CandidateId,
+                                CandidateFirstName = candidate.FirstName,
+                                CandidateLastName = candidate.LastName,
+                                Party = candidate.Party,
+                                ElectoralVotes = 348,
+                                ElectoralVotesWon = votes.ElectoralVotesWon,
+                                VoteCount = votes.VoteCount,
+                                FinalResults = false
+                            };
+                            summaryResults.Add(vResult.CandidateId, vResult);
+                        }
+                    }
+                }
+                int allVotes = summaryResults.Values.Sum(v => v.VoteCount);
+
+                foreach (VotingResult vote in summaryResults.Values)
+                {
+                    vote.VotePercent = (vote.VoteCount / allVotes) * 100;
+                    result.Voting.Add(vote);
+                }
+
+                results.Add(result);
+            }
+            else if (resultsRequest.State == "All")
             {
                 foreach (var state in m_Votes)
                 {
